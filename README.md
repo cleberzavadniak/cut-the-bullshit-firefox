@@ -46,7 +46,7 @@ all again to disk when the browser dies.
 
 ## Usage
 
-Simply call `ffox` script instead of `firefox'.
+Simply call `ffox` script instead of `firefox`.
 
 **I recommend that you backup your current Firefox settings before trying
 this script:**
@@ -57,12 +57,13 @@ $ cp -r firefox firefox.bkp
 ```
 
 (You can run `du -sh ~/.mozilla/firefox`, also, to see how much disk space
-is Firefox currently consuming.)
+is Firefox currently consuming, just out of curiosity.)
 
 ## Requirements
 
-There must be a user-writable `tmpfs` partition in `/dev/shm` (or else all
-the idea of letting Firefox work on RAM will go down the drain).
+There must exist a user-writable `tmpfs` partition mounted in `/dev/shm`
+(or else all the idea of letting Firefox work in RAM will go down the
+drain).
 
 Also, `rsync` must be available.
 
@@ -78,10 +79,10 @@ Also, `rsync` must be available.
 
 Also, get rid of a lot of stupid common Websites content, like Facebook,
 Whatsapp, Telegram, LinkedIn, etc. It does not imply you're going to have
-to login again. These are just "storage" files that I opted to remove
+to login again: these are just "storage" files that I opted to remove
 because they tend to use a lot of space and are basically useless (if
-Facebook want to save some files, they can save it in **their** own
-machines, after all...).
+Facebook want to save some data, they can save it in **their** own
+machines, right?).
 
 **Read the script and adapt it as you find fit before using.**
 
