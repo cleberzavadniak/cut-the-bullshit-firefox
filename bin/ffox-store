@@ -1,0 +1,7 @@
+#!/bin/bash
+
+origin=$HOME/.mozilla/firefox
+target=$HOME/.mozilla/firefox.real
+shm=/dev/shm/$USER/firefox
+
+rsync -av $shm/* $target

@@ -1,0 +1,71 @@
+#!/bin/bash
+
+if ps aux | grep -v grep | grep -q 'pulseaudio';then
+    has_pulseaudio=1
+else
+    has_pulseaudio=0
+fi
+
+if which firefox > /dev/null 2>&1;then
+    bin="firefox"
+else
+    bin="~/Apps/firefox/firefox-bin"
+fi
+
+# Prepare the "in-memory disk" so that
+# Firefox can't strangle our HD:
+origin=$HOME/.mozilla/firefox
+target=$HOME/.mozilla/firefox.real
+shm=/dev/shm/$USER/firefox
+[ -d $shm ] || mkdir -p $shm
+
+if ! [ -L $origin ];then
+    if [ -d $target ];then
+        # firefox.real already exists.
+        # We're going to consider it
+        # the true state of the browser data.
+        set -e
+        echo "$target already exists."
+        if [ -d $origin ];then
+            echo "Removing (probably stale) $origin directory"
+            rm -rf $origin
+        fi
+        set +e
+    else
+        mv $origin $target
+    fi
+
+    set -ex
+    ln -s $shm $origin
+    rsync -av $target/* $shm
+    set +ex
+fi
+
+if [[ $has_pulseaudio ]];then
+    nice -+15 $bin -ProfileManager -no-remote
+else
+    nice -+15 apulse $bin -ProfileManager -no-remote
+fi
+
+# Get rid of STUPID files:
+(
+    cd $shm || exit 1
+    find -type d -wholename "*/cache/morgue/*" -exec rm -frv {} \;
+    # TODO: make it a file:
+    for domain in \
+        app.slack.com web.whatsapp.com web.telegram.org \
+        www.nytimes.com twitter.com www.youtube.com \
+        www.tecmundo.com.br www.uol.com.br \
+        web.facebook.com www.facebook.com www.chess.com \
+        www.quora.com www.reddit.com www.jamendo.com \
+        www.instagram.com www.imdb.com www.dropbox.com \
+        advertising.amazon.com \
+        www.pinterest.com br.pinterest.com \
+        www.linkedin.com br.linkedin.com \
+        www.theguardian.com www.splunk.com;do
+        find -type d -name "https+++$domain*" -exec rm -rf {} \;
+    done
+)
+
+# Keep $target reasonably updated:
+rsync -av $shm/* $target
