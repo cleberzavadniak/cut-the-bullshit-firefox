@@ -10,8 +10,9 @@ your own risk**
 ## Why?
 
 Modern browsers are a joke: basically, by browsing the Web nowadays you're
-allowing any remote moron to use your precious computing resources (your
-CPU, main memory and disk I/O) at his/her own will.
+allowing any remote sub-par programmer to use your precious computing
+resources (your CPU, main memory and disk I/O) at his/her own will with
+any kind of shitty code.
 
 Are you a programmer? Do you care about wasting CPU cycles when designing
 your application? Do you try your best to create well-behaved programs
