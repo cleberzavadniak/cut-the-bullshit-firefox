@@ -47,9 +47,12 @@ else
     nice -+15 apulse $bin -ProfileManager -no-remote
 fi
 
+# Keep $target reasonably updated:
+rsync -av $shm/* $target
+
 # Get rid of STUPID files:
 (
-    cd $shm || exit 1
+    cd $target || exit 1
     find -type d -wholename "*/cache/morgue/*" -exec rm -frv {} \;
     # TODO: make it a file:
     for domain in \
@@ -66,6 +69,3 @@ fi
         find -type d -name "https+++$domain*" -exec rm -rf {} \;
     done
 )
-
-# Keep $target reasonably updated:
-rsync -av $shm/* $target
